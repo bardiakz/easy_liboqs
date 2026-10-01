@@ -19,7 +19,7 @@ dependencies:
   crypto: ^3.0.7
   ffi: ^2.2.0
   hooks: ^2.2.0
-  oqs: 4.1.1
+  oqs: ^4.1.1
 
 dev_dependencies:
   flutter_lints: ^6.0.0
