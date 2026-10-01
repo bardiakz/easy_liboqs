@@ -1,6 +1,14 @@
 name: easy_liboqs
-description: "A new Dart FFI package project."
-version: 0.0.1
+description: Post-quantum cryptography (liboqs) for Dart and Flutter with the native library bundled automatically. Wraps the oqs package, with no manual setup.
+version: 4.1.1
+repository: https://github.com/bardiakz/easy_liboqs
+issue_tracker: https://github.com/bardiakz/easy_liboqs/issues
+topics:
+  - cryptography
+  - post-quantum
+  - ml-kem
+  - ffi
+  - liboqs
 
 environment:
   sdk: ^3.13.1

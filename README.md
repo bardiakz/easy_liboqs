@@ -1,50 +1,57 @@
 # easy_liboqs
 
-A new Dart FFI package project.
+Post-quantum cryptography ([liboqs](https://openquantumsafe.org/)) for Dart and Flutter, with the native library bundled automatically. It wraps [`oqs`](https://pub.dev/packages/oqs) and re-exports its API, so there are no library paths or per-platform setup steps.
 
-## Getting Started
+## Install
 
-This project is a starting point for a Flutter
-[FFI package](https://flutter.dev/to/ffi-package),
-a specialized package that includes native code directly invoked with Dart FFI.
+```bash
+dart pub add easy_liboqs      # or: flutter pub add easy_liboqs
+```
 
-## Project structure
+## Use
 
-This template uses the following structure:
+```dart
+import 'package:easy_liboqs/easy_liboqs.dart';
 
-* `src`: Contains the native source code, and a CmakeFile.txt file for building
-  that source code into a dynamic library.
+void main() {
+  EasyLiboqs.init();
 
-* `lib`: Contains the Dart code that defines the API of the plugin, and which
-  calls into the native code using `dart:ffi`.
+  final kem = KEM.create('ML-KEM-768')!;
+  final keys = kem.generateKeyPair();
+  final enc = kem.encapsulate(keys.publicKey);
+  final secret = kem.decapsulate(enc.ciphertext, keys.secretKey);
+  // secret == enc.sharedSecret
 
-* `bin`: Contains the `build.dart` that performs the external native builds.
+  keys.dispose();
+  kem.dispose();
+}
+```
 
-## Building and bundling native code
+Everything from `oqs` (KEM, signatures, algorithm discovery) is available through this one import. See the [`oqs` docs](https://pub.dev/packages/oqs) for the full API.
 
-`build.dart` does the building of native components.
+## Platforms
 
-Bundling is done by Flutter based on the output from `build.dart`.
+| Platform | Status |
+|---|---|
+| Linux x64, arm64 | supported |
+| macOS arm64, x64 | supported |
+| Windows x64 | supported |
+| Android | supported (CI-tested on x86_64 only) |
+| iOS | not yet |
+| Web | not supported |
 
-## Binding to native code
+## How it works
 
-To use the native code, bindings in Dart are needed.
-To avoid writing these by hand, they are generated from the header file
-(`src/easy_liboqs.h`) by `package:ffigen`.
-Regenerate the bindings by running `dart run ffigen --config ffigen.yaml`.
+A [build hook](https://dart.dev/tools/hooks) downloads the prebuilt liboqs archive from [`liboqs-binaries`](https://github.com/bardiakz/liboqs-binaries), verifies its SHA-256, and bundles the right binary for your target. The first build needs network access (about 74 MB, cached afterwards).
 
-## Invoking native code
+## Versions
 
-Very short-running native functions can be directly invoked from any isolate.
-For example, see `sum` in `lib/easy_liboqs.dart`.
+`easy_liboqs` mirrors `oqs`: same version number, with `oqs` pinned exactly.
 
-Longer-running functions should be invoked on a helper isolate to avoid
-dropping frames in Flutter applications.
-For example, see `sumAsync` in `lib/easy_liboqs.dart`.
+| easy_liboqs | oqs | liboqs |
+|---|---|---|
+| 4.1.1 | 4.1.1 | 0.16.0 |
 
-## Flutter help
+## License
 
-For help getting started with Flutter, view our
-[online documentation](https://docs.flutter.dev), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# easy_liboqs
+MIT, see [LICENSE](LICENSE). The bundled liboqs binaries are MIT licensed, see [LICENSE.liboqs](LICENSE.liboqs).
