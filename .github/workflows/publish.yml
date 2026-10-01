@@ -1,0 +1,22 @@
+name: Publish to pub.dev
+
+# Requires automated publishing enabled on pub.dev for this repo
+# (package admin page -> Automated publishing, tag pattern: v{{version}}).
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # OIDC token pub.dev uses instead of stored credentials
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - run: flutter pub get
+      - run: flutter pub publish --dry-run
+      - run: flutter pub publish --force

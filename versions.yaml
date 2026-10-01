@@ -1,0 +1,10 @@
+# Single source of truth for easy_liboqs.
+# hook/build.dart reads this file at build time; CI rewrites it on each sync.
+# Keep it flat (key: value) so the hook can parse it without a YAML package.
+
+oqs: 4.1.1          # pub.dev `oqs` version, pinned exactly in pubspec.yaml
+liboqs: 0.16.0          # native liboqs version that oqs release targets
+binaries_repo: bardiakz/liboqs-binaries
+binaries_tag: 0.16.0-v2 # liboqs-binaries release tag (NOT derivable from the liboqs version)
+build: 0                # packaging-only revision; >0 publishes as <oqs>+<build>
+sha256: "20fdc8e6e5d68243d4360a2754717ab90189c2de4a7ee3bde474ac51e51d41c5"              # REQUIRED: copy from SHA256SUMS.txt in that release (hook refuses to run without it)
