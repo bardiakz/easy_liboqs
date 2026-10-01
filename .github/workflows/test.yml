@@ -71,8 +71,9 @@ jobs:
           path: .dart_tool/hooks_runner/shared
           key: liboqs-linux-arm64-${{ hashFiles('versions.yaml') }}
 
-      - run: dart pub get
-      - run: dart analyze
+      # The example/ app needs Flutter, so skip it here.
+      - run: dart pub get --no-example
+      - run: dart analyze lib hook test
       - run: dart test
 
   android:
