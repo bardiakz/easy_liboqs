@@ -1,4 +1,3 @@
-// lib/easy_liboqs.dart
 import 'dart:io' show Platform;
 
 import 'package:oqs/oqs.dart';
@@ -26,7 +25,6 @@ class EasyLiboqs {
     if (!Platform.isWindows) {
       LibOQSLoader.loadLibrary(explicitPath: bundledLiboqsPath());
     }
-    // TODO: Windows path lookup (see probe.dart).
 
     LibOQS.init();
     _initialized = true;

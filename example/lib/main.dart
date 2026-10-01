@@ -1,4 +1,3 @@
-// example/lib/main.dart
 import 'package:easy_liboqs/easy_liboqs.dart';
 import 'package:flutter/material.dart';
 

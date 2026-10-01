@@ -1,5 +1,3 @@
-// lib/src/probe.dart
-//
 // Tiny @Native binding whose asset id (package:easy_liboqs/src/probe.dart)
 // matches the CodeAsset name in hook/build.dart. Calling it proves the
 // bundled liboqs was built into the app; dladdr on its address tells us

@@ -1,5 +1,3 @@
-// example/integration_test/smoke_test.dart
-//
 // Runs inside the real example app on a device/emulator, so it checks that
 // the bundled liboqs is found in an actual app bundle.
 import 'package:easy_liboqs/easy_liboqs.dart';
