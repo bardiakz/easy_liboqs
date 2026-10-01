@@ -10,6 +10,12 @@ topics:
   - ffi
   - liboqs
 
+platforms:
+  linux:
+  macos:
+  windows:
+  android:
+
 environment:
   sdk: ^3.13.1
 
