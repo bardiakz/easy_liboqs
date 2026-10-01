@@ -4,6 +4,12 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch: # adds a "Run workflow" button in the Actions tab
+
+# A newer run on the same branch/PR cancels the older one still in progress.
+concurrency:
+  group: test-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   # Runs the hook + unit tests natively on each OS/CPU, then builds the
