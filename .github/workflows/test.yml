@@ -17,9 +17,8 @@ jobs:
       matrix:
         include:
           # NOTE: runner labels change over time; check GitHub's runner docs.
-          # Linux ARM runners are free only for public repos.
+          # Linux arm64 has no official Flutter SDK, see the linux-arm64 job below.
           - { name: linux-x64,   os: ubuntu-latest,    build: linux,   experimental: false }
-          - { name: linux-arm64, os: ubuntu-24.04-arm, build: linux,   experimental: false }
           - { name: macos-arm64, os: macos-latest,     build: macos,   experimental: false }
           - { name: macos-x64,   os: macos-15-intel,   build: macos,   experimental: false }
           # Windows path lookup is not implemented yet; flip to false once it is.
@@ -53,6 +52,28 @@ jobs:
         run: |
           flutter pub get
           flutter build ${{ matrix.build }}
+
+  # Flutter publishes no Linux arm64 SDK, but Dart does and this package is
+  # pure Dart, so test the aarch64 binary with plain `dart test`.
+  # (Free only for public repos. The example app is not built here.)
+  linux-arm64:
+    name: linux-arm64 (dart)
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - uses: actions/cache@v4
+        with:
+          path: .dart_tool/hooks_runner/shared
+          key: liboqs-linux-arm64-${{ hashFiles('versions.yaml') }}
+
+      - run: dart pub get
+      - run: dart analyze
+      - run: dart test
 
   android:
     name: android-emulator-x86_64
